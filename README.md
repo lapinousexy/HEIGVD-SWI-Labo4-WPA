@@ -80,6 +80,8 @@ Un fork du repo original . Puis, un Pull Request contenant **vos noms** et :
 
 -	**(Challenge optionnel)** Script ```scairodump.py``` **abondamment commenté/documenté** 
    - Capture d’écran de votre script en action:
+   ![](img/SWI_Labo04_Image03.png)
+
 -	Envoyer le hash du commit et votre username GitHub et **les noms des participants** par email au professeur et à l'assistant
 
 
