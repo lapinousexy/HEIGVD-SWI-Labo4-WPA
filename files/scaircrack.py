@@ -36,7 +36,7 @@ handshake2 = wpa[6]
 
 # The last handshake packet contains the MIC encrypted with the KCK
 handshake4 = wpa[8]
-handshake1.show()
+
 # Important parameters for key derivation - most of them can be obtained from the pcap file
 passPhrase  = "actuelle"
 A           = "Pairwise key expansion" #this string is used in the pseudo-random function
