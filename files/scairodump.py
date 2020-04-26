@@ -110,11 +110,12 @@ def bruteForceWPA(handshakeList):
 
             # Calculate MIC over EAPOL payload (Michael)- The ptk is, in fact, KCK|KEK|TK|MICK
             if(keyDescriptorVersion == 2):
-                mic = hmac.new(ptk[0:16],data,hashlib.sha1)
+                # In the case of SHA-1, we have to truncate the hash in order for it to fit in the packet
+                mic = hmac.new(ptk[0:16],data,hashlib.sha1).hexdigest()[:-8]
             else:
-                mic = hmac.new(ptk[0:16],data,hashlib.md5)
+                mic = hmac.new(ptk[0:16],data,hashlib.md5).hexdigest()
             
-            if mic.hexdigest() == b2a_hex(mic_to_test).decode():
+            if mic == b2a_hex(mic_to_test).decode():
                 print("[+] Found passphrase: " + passPhrase.decode())
                 # Source: https://www.geeksforgeeks.org/python-exit-commands-quit-exit-sys-exit-and-os-_exit/
                 sys.exit("")
