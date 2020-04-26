@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+#
+# Author: Victor Truan, Jerome Bagnoud | SWI - Labo 04 - Exo 01
 
 """
 Derive WPA keys from Passphrase and 4-way handshake info

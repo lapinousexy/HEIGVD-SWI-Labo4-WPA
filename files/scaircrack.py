@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+#
+# Author: Victor Truan, Jerome Bagnoud | SWI - Labo 04 - Exo 02
 
 from scapy.all import *
 from binascii import a2b_hex, b2a_hex
@@ -8,6 +10,12 @@ from numpy import array_split
 from numpy import array
 from numpy import right_shift
 import hmac, hashlib
+import argparse
+
+# Arguments
+parser = argparse.ArgumentParser(description="Ce script permet de bruteforce des passphrases WPA, tiré depuis des handshake présent dans une capture wireshark.")
+parser.add_argument("-w", required=True, type=str, help="nom du fichier de dictionnaire")
+arguments = parser.parse_args()
 
 def customPRF512(key,A,B):
     """
@@ -62,7 +70,7 @@ B           = min(APmac,Clientmac)+max(APmac,Clientmac)+min(ANonce,SNonce)+max(A
 data        = bytes(handshake4['EAPOL'])[:micStartingOffset] + b'\x00' * 22
 
 ssid = str.encode(ssid)
-fileName = "wordlist.txt"
+fileName = arguments.w
 found = False
 
 # Used to know wether it's HMAC-MD5 or HMAC-SHA1
